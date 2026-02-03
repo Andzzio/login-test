@@ -40,8 +40,25 @@ class AuthProviderApp extends ChangeNotifier {
       return true;
     } catch (e) {
       _isLoading = false;
-      notifyListeners();
       _errorMsg = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> register(String fullName, String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _currentUser = await authRepository.register(fullName, email, password);
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMsg = e.toString();
+      notifyListeners();
       return false;
     }
   }

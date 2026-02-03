@@ -1,6 +1,7 @@
 import 'package:firebase_app/data/models/user_model.dart';
 import 'package:firebase_app/domain/datasources/datasources.dart';
 import 'package:firebase_app/domain/entities/user.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 
 class FbAuthDatasource implements Datasource {
@@ -15,6 +16,28 @@ class FbAuthDatasource implements Datasource {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
+      );
+      return UserModel(
+        uid: userCredential.user!.uid,
+        email: userCredential.user!.email!,
+        name: userCredential.user!.displayName ?? "",
+      ).toUserEntity();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<User> register(String fullName, String email, String password) async {
+    try {
+      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await fb.FirebaseAuth.instance.currentUser!.updateDisplayName(fullName);
+
+      debugPrint(
+        "displayName: ${fb.FirebaseAuth.instance.currentUser!.displayName}",
       );
       return UserModel(
         uid: userCredential.user!.uid,

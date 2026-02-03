@@ -243,7 +243,35 @@ class _RegisterFormState extends State<RegisterForm> {
                   onPressed: widget.authProvider.isLoading
                       ? null
                       : () async {
-                          if (_formKey.currentState!.validate()) {}
+                          if (_formKey.currentState!.validate()) {
+                            debugPrint(
+                              "fullName: ${_fullNameController.text.trim()}",
+                            );
+                            final bool success = await widget.authProvider
+                                .register(
+                                  _fullNameController.text.trim(),
+                                  _emailController.text.trim(),
+                                  _passwordController.text,
+                                );
+                            if (!mounted) {
+                              return;
+                            }
+                            if (success) {
+                              // ignore: use_build_context_synchronously
+                              context.go("/home");
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    widget.authProvider.errorMsg ??
+                                        "Register Failed",
+                                  ),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
+                          }
                         },
                   style: ButtonStyle(
                     foregroundColor: WidgetStatePropertyAll<Color>(
@@ -262,7 +290,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                   ),
 
-                  child: Text("Sign Up"),
+                  child: widget.authProvider.isLoading
+                      ? CircularProgressIndicator()
+                      : Text("Sign Up"),
                 ),
               ),
               SizedBox(height: 20),

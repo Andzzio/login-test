@@ -11,6 +11,7 @@ GoRouter createRouter() {
       final user = FirebaseAuth.instance.currentUser;
       final isLoggingIn = state.matchedLocation == "/login";
       final isRegistering = state.matchedLocation == "/register";
+
       if (user == null && !isLoggingIn && !isRegistering) {
         return "/login";
       }
