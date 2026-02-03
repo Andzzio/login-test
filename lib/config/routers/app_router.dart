@@ -10,12 +10,12 @@ GoRouter createRouter() {
     redirect: (context, state) {
       final user = FirebaseAuth.instance.currentUser;
       final isLoggingIn = state.matchedLocation == "/login";
-
-      if (user == null && !isLoggingIn) {
+      final isRegistering = state.matchedLocation == "/register";
+      if (user == null && !isLoggingIn && !isRegistering) {
         return "/login";
       }
 
-      if (user != null && isLoggingIn) {
+      if (user != null && (isLoggingIn || isRegistering)) {
         return "/home";
       }
 
@@ -31,6 +31,11 @@ GoRouter createRouter() {
         path: "/home",
         name: HomeScreen.routeName,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: "/register",
+        name: RegisterScreen.routeName,
+        builder: (context, state) => const RegisterScreen(),
       ),
     ],
   );

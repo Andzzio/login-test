@@ -2,6 +2,7 @@ import 'package:firebase_app/presentation/widgets/login/lock_icon.dart';
 import 'package:firebase_app/presentation/widgets/login/login_form.dart';
 import 'package:firebase_app/presentation/providers/auth_provider_app.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -38,7 +39,9 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text("Don't have an account?"),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push("/register");
+                    },
                     child: Text(
                       "Sign Up",
                       style: TextStyle(color: Color(0xFF2584EC)),

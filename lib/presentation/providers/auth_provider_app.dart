@@ -8,6 +8,7 @@ class AuthProviderApp extends ChangeNotifier {
   AuthProviderApp({required this.authRepository});
 
   bool isObscure = true;
+  bool isObscureConfirm = true;
   bool _isLoading = false;
   User? _currentUser;
   String? _errorMsg;
@@ -20,6 +21,11 @@ class AuthProviderApp extends ChangeNotifier {
 
   void toggleObscure() {
     isObscure = !isObscure;
+    notifyListeners();
+  }
+
+  void toggleObscureConfirm() {
+    isObscureConfirm = !isObscureConfirm;
     notifyListeners();
   }
 
